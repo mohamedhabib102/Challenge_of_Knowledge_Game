@@ -12,6 +12,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="menu">
+        <div class="icon"><i class="fa-solid fa-gear"></i></div>
+        <ul>
+            <li><a href="hunt.html" class="">  تجميع الحروف  </a></li>
+            <li><a href="continueWords.html">  تجميع الكلمات  </a></li>
+            <li><a href="questions.html">  أسئلة عن دين الأسلام </a></li>
+            <li><a href="#" id="change-player">  تغير اسم اللأعب </a></li>
+            <li><a href="suppourt.html" class="active"> لدعم المصمم </a></li>
+        </ul>
+    </div>
     <header class="header-support">
         <h1> كيف تدعمنا؟ </h1>
     </header>
@@ -46,5 +56,18 @@
             </div>
         </div>
     </footer>
+    <script>
+
+        // Mange Menu
+const menu = document.querySelector(".menu");
+const buttonToShow = document.querySelector(".menu .icon");
+
+
+
+buttonToShow.addEventListener("click", () => {
+    menu.classList.toggle("show");
+})
+
+    </script>
 </body>
 </html>
