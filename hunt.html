@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="menu">
+        <div class="icon"><i class="fa-solid fa-gear"></i></div>
+        <ul>
+            <li><a href="hunt.html" class="active">  تجميع الحروف  </a></li>
+            <li><a href="continueWords.html">  تجميع الكلمات  </a></li>
+            <li><a href="questions.html">  أسئلة عن دين الأسلام </a></li>
+            <li><a href="#" id="change-player">  تغير اسم اللأعب </a></li>
+            <li><a href="suppourt.html" class=""> لدعم المصمم </a></li>
+        </ul>
+    </div>
+    <div class="pupop">
+        <div class="win">
+            <p class="message-player"> !أحسنت لقد فزت بالجولةّ</p>
+            <button class="colse">حسنا</button>
+        </div>
+    </div>
+    <div class="pupop-is-winer">
+        <div class="win">
+            <p class="message-player"> !أحسنت لقد أختمت اللعبة</p>
+            <button class="home"><a href="index.html"> الصفحة الرئيسة </a></button>
+            <button class="reload"> العب مره أخرى </button>
+        </div>
+    </div>
+    <div class="lose">
+        <p> حاول مره أخرى! </p>
+    </div>
+    <section class="body">
+        <div class="container">
+            <div class="head">
+                <div class="current-letter"><span id="current-le"></span> قم بالبحث على حرف</div>
+                <div class="scoorPlayer"> الفوز <span id="scoor"></span> </div>
+                <p class="current-player"> أسم اللأعب: <span id="playerGame"></span></p>
+            </div>
+    
+            <div class="game-container">
+    
+            </div>
+        </div>
+    </section>
+<script src="js/hunt.js"></script>
+</body>
+</html>

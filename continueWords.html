@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Page</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="menu">
+        <div class="icon"><i class="fa-solid fa-gear"></i></div>
+        <ul>
+            <li><a href="hunt.html">  تجميع الحروف  </a></li>
+            <li><a href="continueWords.html" class="active">  تجميع الكلمات  </a></li>
+            <li><a href="questions.html">  أسئلة عن دين الأسلام </a></li>
+            <li><a href="#" id="change-player">  تغير اسم اللأعب </a></li>
+            <li><a href="suppourt.html" class=""> لدعم المصمم </a></li>
+        </ul>
+    </div>
+    <header class="header-words">
+        <h3>  تجميع الكلمات </h3>
+        <p class="name-player"> أسم اللأعب: <span></span></p>
+    </header>
+    <div class="message-player" id="win">
+        <p>  أحسنت لقد فوزت بالجولة </p>
+        <button class="close-mesg"> حسنا </button>
+    </div>
+    <div class="message-player" id="lose">
+        <p>  حاول مره أخرى </p>
+        <button class="close-mesg"> حسنا </button>
+    </div>
+    <div class="words">
+        <div class="message-winer">  أحسنت لقد انهيت اللعبه </div>
+        <div class="words-container">
+            <div class="message-game">
+                <h3> طرق الفوز  </h3>
+                <div class="colors">
+                    <div class="color yel"></div>
+                    <p class="message"> يعني انك فوزت </p>
+                </div>
+
+                <div class="colors">
+                    <div class="color red"></div>
+                    <p class="message"> يعني انك خسرت </p>
+                </div>
+            </div>
+            <div class="triyes">
+
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="checke"> تحقق من الجولة </button>
+            <p class="help-btn" id="help"> مساعدة  <span></span></p>
+            <div class="content-help"></div>
+            <div class="message-los-and-win">
+
+            </div>
+        </div>
+    </div>
+    <script src="js/continueWords.js"></script>
+</body>
+</html>
