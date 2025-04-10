@@ -1,3 +1,6 @@
+
+
+
 const namePlayer = document.querySelector("form .box input");
 const button = document.querySelector("form button");
 const form = document.forms[0];
@@ -23,7 +26,6 @@ form.addEventListener("submit", (e) => {
 const element = document.getElementById("years");
 const currentYear = new Date().getFullYear();
 element.textContent = currentYear;
-
 
 
 

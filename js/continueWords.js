@@ -1,6 +1,7 @@
-const namePlayer = document.querySelector(".name-player span");
+const namePlayer = document.querySelector(".name-player p");
 const currentName = localStorage.getItem("gamePlayer");
 const changeButton = document.getElementById("change-player");
+
 
 
 
@@ -28,12 +29,32 @@ changeButton.addEventListener("click", (e) => {
 })
 
 
+// Array of objects: each has the incomplete word and its true value
+let wordPairs = [
+    { incomplete: "P_n_a____", complete: "Pineapple" },
+    { incomplete: "Str_w___ry", complete: "Strawberry" },
+    { incomplete: "Pi__a", complete: "Pizza" },
+    { incomplete: "Gr__e", complete: "Grape" },
+    { incomplete: "M_n_o", complete: "Mango" },
+    { incomplete: "Fr__t", complete: "Fruit" },
+    { incomplete: "L_mon", complete: "Lemon" },
+    { incomplete: "B_n_n_", complete: "Banana" },
+    { incomplete: "C_c_a", complete: "Cocoa" },
+    { incomplete: "A__le", complete: "Apple" }
+  ];
+  
+  // Shuffle the word pairs on page load
+  wordPairs.sort(() => Math.random() - 0.5);
+  
+  // Separate them again into two arrays
+  const incompletes = wordPairs.map(pair => pair.incomplete);
+  const incompletesTrue = wordPairs.map(pair => pair.complete);
+  
+
 
 
 const numersOfLength = 6;
 let curentIndex = 0;
-const incompletes = ["P_n_a____", "Str_w___ry", "Pi__a", "Gr__e", "M_n_o", "Fr__t", "L_mon", "B_n_n_", "C_c_a", "A__le"];
-const incompletesTrue = ["Pineapple", "Strawberry", "Pizza", "Grape", "Mango", "Fruit", "Lemon", "Banana", "Cocoa", "Apple"];
 const triesContainer = document.querySelector(".words-container .triyes");
 
 
@@ -67,11 +88,35 @@ function createTries() {
 
 createTries();
 
+// message win
+const winerGame = document.querySelector(".pupop-is-winer");
+const toHome = document.querySelector(".to__home");
+const reloadPage = document.querySelector(".reload__page");
+const voiceWin = document.querySelector(".sound-wind")
+voiceWin.pause()
+function showConfetti() {
+    confetti({
+      particleCount: 250,
+      spread: 100,
+      origin: { y: 0.5},
+    });
+  }
 
+toHome.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Go To Home Page
+    location.replace("../index.html")
+})
+
+// reload page at event click
+reloadPage.addEventListener("click", () => {
+    window.location.reload()
+})
 
 function defaultSettings(ele, op, dis){
     ele.forEach((ele) => {
-        ele.style.opacity = op ? op : 1;
+        ele.classList.remove("add-opacity");
+        ele.style.opacity = `${op ? op : 1}!important`;
         ele.disabled = dis ? dis : false;
     })
 }
@@ -103,13 +148,13 @@ helpButton.addEventListener("click", () => {
 function enableNextTry() {
     const currentTry = document.querySelector(`.try-${curentIndex}`);
     const inputs = currentTry.querySelectorAll("input");
-    const winPlayer = document.getElementById("win");
     const losePlayer = document.getElementById("lose");
     const closeMessages = document.querySelectorAll(".close-mesg");
     const sectionMessage = document.querySelectorAll(".message-player");
 
     const allTry = document.querySelectorAll(".try input");
     defaultSettings(allTry, 0.1, true);
+    focusInputs()
 
     closeMessages.forEach((ele) => ele.addEventListener("click", () => {
         sectionMessage.forEach((e) => {
@@ -126,7 +171,6 @@ function enableNextTry() {
         }
     });
 
-    const messageWiner = document.querySelector(".message-winer");
 
     inputs.forEach((input) => {
         if (!input.dataset.listener) { 
@@ -134,30 +178,34 @@ function enableNextTry() {
                 if (e.key === "Enter") {
                     const allValuesInputs = Array.from(inputs).map((input) => input.value).join("");
                     if (allValuesInputs === incompletesTrue[curentIndex]) {
-                        // تغيير ألوان الخلفية وتعطيل الحقول
                         currentTry.querySelectorAll("input").forEach((el) => {
-                            el.style.backgroundColor = "#ebeb13";
+                            el.style.backgroundColor = "#05b703";
                             el.style.opacity = "0.3";
                             el.disabled = true;
                         });
-
+                        
                         curentIndex++;
-                        winPlayer.classList.add("show-message");
-
+                        // winPlayer.classList.add("show-message");
+                        
                         if (curentIndex < incompletes.length) {
                             const nextTry = document.querySelector(`.try-${curentIndex}`);
                             const nextInputs = nextTry.querySelectorAll("input");
                             defaultSettings(nextInputs, 1, false); 
-                            enableNextTry(); // إعداد المحاولة التالية
-                            focusInputs();
+                            enableNextTry();
+                            focusInputs()
                         } else {
-                            messageWiner.classList.add("show-mesg");
+                            const inputs = document.querySelectorAll("input");
+                            defaultSettings(inputs, 0.3, true)
+                            winerGame.classList.add("add-winner")
+                            voiceWin.play()  
+                            showConfetti()
                         }
                     } else {
-                        inputs.forEach((input) => {
-                            input.style.backgroundColor = "#af1414";
+                        const inputs = Array.from(currentTry.querySelectorAll("input")).
+                        filter(input => input.classList.contains("no-disabled"));
+                        inputs.forEach((el) => {
+                            el.style.backgroundColor = "#c33d3d";
                         })
-                        losePlayer.classList.add("show-message");
                     }
                 }
             });
@@ -172,9 +220,8 @@ const checkButton = document.getElementById("checke");
 
 enableNextTry()
 
+
 checkButton.addEventListener("click", () => {
-    const winPlayer = document.getElementById("win");
-    const losePlayer = document.getElementById("lose");
     const closeMessages = document.querySelectorAll(".close-mesg");
     const sectionMessage = document.querySelectorAll(".message-player");
 
@@ -194,38 +241,71 @@ checkButton.addEventListener("click", () => {
  if (allValuesInputs === incompletesTrue[curentIndex]) {
 
      currentTry.querySelectorAll("input").forEach((el) => {
-         el.style.backgroundColor = "#ebeb13";
+         el.style.backgroundColor = "#05b703";
          el.style.opacity = "0.3";
          el.disabled = true;
      });
 
      curentIndex++; 
-     winPlayer.classList.add("show-message");
+
 
      if (curentIndex < incompletes.length) {
          enableNextTry(); 
-         focusInputs();
+         focusInputs()
      } else {
-         const messageWiner = document.querySelector(".message-winer");
-         messageWiner.classList.add("show-mesg"); 
+         winerGame.classList.add("add-winner")
+         voiceWin.play()  
+         showConfetti()
      }
  } else {
      inputs.forEach((input) => {
-         input.style.backgroundColor = "#af1414";
+         input.style.backgroundColor = "#c33d3d";
      });
-     losePlayer.classList.add("show-message");
  }
 })
 
 
+function focusInputs() {
+    const currentTry = document.querySelector(`.try-${curentIndex}`);
+    
+    if (currentTry) {
+        const inputs = Array.from(currentTry.querySelectorAll("input"))
+            .filter(input => input.classList.contains("no-disabled"));
 
-function focusInputs(){
-    const currentTriyes = document.querySelector(`.try-${curentIndex}`)
-    if (currentTriyes){
-        const input = currentTriyes.querySelectorAll("input");
-        const inputs = Array.from(input).filter((int) => int.classList.contains("no-disabled"))
-        inputs.forEach((input) => {
-            input.focus()
-        })
+
+            console.log(inputs);
+            
+
+        const firstEmptyInput = inputs.find(input => input.value === "");
+
+        
+        if (firstEmptyInput) {
+            firstEmptyInput.focus();
+            console.log(firstEmptyInput);
+            
+        }
+
+        inputs.forEach((input, index) => {
+            input.addEventListener("input", () => {
+                if (input.value !== "" && index < inputs.length - 1) {
+                    let nextInput = inputs[index + 1]; 
+
+                    console.log(nextInput);
+                    
+
+                    if (nextInput) {
+                        nextInput.focus(); 
+                    }
+                }
+            });
+        });
+    }
 }
-}
+
+focusInputs()
+
+
+
+
+
+

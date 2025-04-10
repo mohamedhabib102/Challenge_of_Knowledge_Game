@@ -27,26 +27,21 @@ buttonToShow.addEventListener("click", () => {
 
 
 
-const englishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 
 const gameContainer = document.querySelector(".game-container");
 const imageBox = "../images/logo-box.jpg";
-const popupMessage = document.querySelector(".pupop");
-const colseButton = document.querySelector(".pupop .colse");
+
 const lose = document.querySelector(".lose")
 let currentle = document.getElementById("current-le");
+let word = document.getElementById("word");
 let countScoor = 0;
 let scoorPlayer = document.getElementById("scoor");
-let scoorLocal = localStorage.getItem("current-scoor");
 
 
 
-if (scoorLocal){
-    scoorPlayer.textContent = scoorLocal;
-} else{
-    scoorPlayer.textContent = 0;
-}
 
+scoorPlayer.textContent = countScoor;
 
 // Change Name Player At Click Here
 const playerName = document.getElementById("change-player");
@@ -58,25 +53,14 @@ const playerName = document.getElementById("change-player");
 playerName.addEventListener("click", (e) => {
     e.preventDefault();
     localStorage.removeItem("gamePlayer");
-    localStorage.removeItem("current-scoor");
     // Go To Home Page
     location.replace("../index.html")
 })
 
-// playerGame.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     localStorage.removeItem("gamePlayer");
-//     localStorage.removeItem("current-scoor");
-//     // Go To Home Page
-//     document.location.href = "../index.html";
-//     console.log(true)
-// })
 
 
-
-// let availableLetters  = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-
-let letters = Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+const englishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let letters = Array.from(englishAlphabet);
 function randomLetterGenerator() {
     let currentIndex = 0;
 
@@ -115,7 +99,7 @@ homeBtn.addEventListener("click", () => {
 
 // Reaset Value in LocalStorage And Scoor Player
 reloadBtn.addEventListener("click", () => {
-    localStorage.removeItem("current-scoor")
+
     window.location.reload();
     popupWinnerGame.classList.remove("add-winner")
 })
@@ -123,85 +107,262 @@ reloadBtn.addEventListener("click", () => {
 
 
 
-currentle.textContent = getRandomLetter();
 
 
-function createLetters(){
-    let remainingLetters = [...englishAlphabet];
 
-    for (let i = 0; i < englishAlphabet.length; i++){
-        let box = document.createElement("div");
-        box.className = "box";
+function getRandomWords(){
+    const wordsGroups = [
+        ["APPLE", "BANANA" , "CAR", "DOG", "EASY", "FISH", "GIRAFFE", "HOUSE", "ICE", "JUMP"],
+        ["MONKEY", "KITE", "LEAF", "MOUSE", "NICE", "PAST", "QUIET", "ROCK", "SILLY", "TREE"],
+        ["ZEBRA", "ANT", "BIRD", "CAT", "DOG", "ELEPHANT", "FROG", "GIRAFFE", "HAT", "JAR"]
+    ];
+    // create random word
+    const randomGroup = wordsGroups[Math.floor(Math.random() * wordsGroups.length)];
+
+    console.log(randomGroup);
+    return randomGroup;
+}
+
+getRandomWords()
+
+let wordsArray = getRandomWords();
+
+let wordsUser = [];
+let currentWord = 0; 
+let WordContent =  document.querySelector(".current-letter")
+let  time;
+let timer;
+const queue =  document.querySelector(".queue")
+const nextWord =  document.querySelector(".delete__letter");
+const roundWin =  document.querySelector(".round__Win");
+const winScoor =  document.getElementById("winScoor");
+winScoor.textContent = wordsArray.length;
+const timeUser =  document.getElementById("time-user")
+timeUser.textContent =  time;
+const soundWin = document.querySelector(".sound-wind");
+const pupopLose =  document.querySelector(".pupop__lose");
+const pupopLoseClose =  document.querySelector(".pupop__lose .colse");
+const pupopLoseReload =  document.querySelector(".pupop__lose .reload");
+
+soundWin.pause()
 
 
+
+// at event click reomved alert message at lose the user
+pupopLoseClose.addEventListener("click", () => {
+    pupopLose.classList.remove("add-message")
+})
+
+
+// at event click, make page is reload
+pupopLoseReload.addEventListener("click", () => {
+    window.location.reload();
+})
+
+
+// update letters of boxes
+function updateettersAtWinOrLose(){
+    let letters = generateRandomLetters()
+    document.querySelectorAll(".box").forEach((box, index) => {
+        if (index < letters.length){
+            let letterElement = box.querySelector(".letter");
+            if (letterElement) {
+                letterElement.textContent = letters[index];
+            }
+        }
+    })
+}
+
+
+// function win animation 
+function showConfetti() {
+    confetti({
+      particleCount: 250,
+      spread: 100,
+      origin: { y: 0.5},
+    });
+  }
+
+  function startTimer() {
+    time = 30;
+    timeUser.textContent = time;
+
+    timer = setInterval(() => {
+        time--;
+        timeUser.textContent = time;
+
+        if (time <= 0) {
+            clearInterval(timer);
+            timer = null;
+            currentWord++;
+            updateettersAtWinOrLose();
+
+            if (currentWord < wordsArray.length) {
+                wordsUser = [];
+                queue.textContent = "";
+                word.textContent = wordsArray[currentWord];
+                startTimer();
+            } else {
+                endGame();
+            }
+        }
+    }, 1000);
+}
+
+
+startTimer();
+
+
+
+
+word.textContent = wordsArray[currentWord];
+
+if (wordsUser.length > 0){
+    queue.textContent = wordsUser
+} else{
+    queue.textContent = ""
+}
+
+
+
+
+let remainingLetters = [...englishAlphabet];
+function generateRandomLetters() {
+    let remainingLetters = [...englishAlphabet]; 
+    let randomLetters = [];  
+
+
+    while (remainingLetters.length > 0) {
         const randomIndex = Math.floor(Math.random() * remainingLetters.length);
         let randomLetter = remainingLetters[randomIndex];
 
-
-        remainingLetters.splice(randomIndex, 1);
-        // Create letter
-        let letter = document.createElement("div");
-        letter.className = "letter back";
-        let textLetter = document.createTextNode(randomLetter);
-        letter.appendChild(textLetter);
-        box.appendChild(letter);
-
-        // Create Image 
-        let image = document.createElement("img");
-        image.className = "image-logo face";
-        image.src = imageBox;
-        box.appendChild(image);
-
-        gameContainer.appendChild(box);
+        randomLetters.push(randomLetter);  
+        remainingLetters.splice(randomIndex, 1);  
     }
+
+    return randomLetters;  
+}
+
+    
+
+    function createLetters() {
+        const randomLetters = generateRandomLetters();  
+    
+        randomLetters.forEach((letter) => {
+            let box = document.createElement("div");
+            box.className = "box";
+    
+            // Create letter element
+            let letterElement = document.createElement("div");
+            letterElement.className = "letter";
+            let textLetter = document.createTextNode(letter);
+            letterElement.appendChild(textLetter);
+            box.appendChild(letterElement);
+
+            gameContainer.appendChild(box);
+    });
 
     document.querySelectorAll(".box").forEach((ele) => {
         ele.addEventListener("click", () => {
-            if (ele.classList.contains("show")) return;
-            ele.classList.add("show");
-            // Condition Win
-            const currentLetter = ele.children[0];
-            if (currentLetter.textContent === currentle.textContent){
-                // State Win 
-                popupMessage.classList.add("add-message")
-                currentle.textContent = getRandomLetter();
-                let count = parseInt(scoorPlayer.textContent++);
-                localStorage.setItem("current-scoor", count+1);
-                ele.classList.add("disabled")
-            } else{
-                // State Lose
-                console.log(false);
-                lose.classList.add("show");
-                // ele.classList.add("losePlayer");
-                // Reset Messages
-                setTimeout(() => {
-                    ele.classList.remove("show");
-                }, 200)
+            // if the button is disabled, no action will performed
+            if (ele.disabled) return;
+    
 
-                setTimeout(() => lose.classList.remove("show"), 1000)
-            }
+            // add letter to user
+            wordsUser.push(ele.textContent.trim());
+            console.log(wordsUser);
+            queue.textContent = wordsUser.join(""); 
 
-            if (currentLetter.textContent === currentle.textContent){
-                const allBoxesShown = document.querySelectorAll(".box").every((element) => element.classList.contains("show"));
-                if (allBoxesShown) {
-                    popupWinnerGame.classList.add("add-winner");
-                    console.log("Your Winner");
-                } else {
-                    console.log(
-                    "%cYour %cGamming %cNow", 
-                    "color: red; font-size: 30px",
-                    "color: red; font-size: 30px",
-                    "color: red; font-size: 30px"
-                    );
+            if (queue.textContent.trim() === wordsArray[currentWord]) {
+                // stop last timer 
+                clearInterval(timer);
+                timer = null;
+                time = 0;
+                timeUser.textContent = time;
+
+                // move to next word and plus one scoor
+                currentWord++;
+
+                updateettersAtWinOrLose()
+
+                // Restart data for next word
+                wordsUser = [];
+                word.textContent = wordsArray[currentWord];
+                queue.textContent = ""
+
+                if (currentWord < wordsArray.length) {
+                    startTimer();
                 }
+                
+                // progers win and state win
+                countScoor++
+                scoorPlayer.textContent = countScoor;
+
+                // show message win
+                roundWin.classList.add("show__Round")
+                setTimeout(() => {
+                    roundWin.classList.remove("show__Round")
+                }, 800)
+                
+            } else {
+                if (!timer && currentWord < wordsArray.length) {
+                    startTimer();
+                }
+                console.log("no");
             }
-        })
+
+                // check if the user is win and lose
+                if (countScoor === wordsArray.length){
+                    endGame()
+                    return;
+                }
+        });
+    });
+
+
+
+    // delete last letter
+    nextWord.addEventListener("click", () => {
+        try {
+            wordsUser.pop()
+            queue.textContent = wordsUser.join(""); 
+        } catch (error) {
+            console.log(error);
+        }
     })
+
+    // next word at state end time
+    function atEndTime(){
+        if (time <= 0){
+            wordsUser = [];
+            currentWord++;
+            word.textContent = wordsArray[currentWord];
+            queue.textContent = "";
+        }
+    }
+
+    atEndTime()
+
+
 }
-createLetters();
+createLetters();  
 
-// Remove Popup
-colseButton.addEventListener("click", () => {
-    popupMessage.classList.remove("add-message");
-});
+function endGame() {
+    clearInterval(timer);
+    timer = null;
+    WordContent.textContent = "انتهت اللعبة";
 
+    document.querySelectorAll(".box").forEach((ele) => {
+        ele.disabled = true;
+        ele.classList.add("addEvent");
+    });
+
+    if (countScoor === wordsArray.length) {
+        popupWinnerGame.classList.add("add-winner");
+        showConfetti();
+        soundWin.play();
+    } else {
+        // خسارة
+        pupopLose.classList.add("add-message");
+    }
+}

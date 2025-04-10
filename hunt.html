@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="loader">
+        <!-- <img src="images/icon-512.png" alt="icon-512"> -->
+        <!-- <div class="current__loder"></div> -->
+        <h3> تحدي المعرفة <span>والمهارة</span>  </h3>
+    </div>
+    <audio controls id="sound-wind" class="sound-wind">
+        <source src="sounds/winnerSound.mp3">
+    </audio>
     <div class="menu">
         <div class="icon"><i class="fa-solid fa-gear"></i></div>
         <ul>
@@ -21,29 +29,48 @@
             <li><a href="#" id="change-player">  تغير اسم اللأعب </a></li>
             <li><a href="suppourt.html" class=""> لدعم المصمم </a></li>
         </ul>
+
+
+        <div class="current-player">
+            <img src="images/default-image.jpg" alt="default-image">
+            <p id="playerGame"></p>
+        </div>
     </div>
-    <div class="pupop">
-        <div class="win">
-            <p class="message-player"> !أحسنت لقد فزت بالجولةّ</p>
-            <button class="colse">حسنا</button>
+    <div class="pupop__lose">
+        <div class="">
+            <p> لقد خسرت يجب عليك اعادة اللعب لتتمكن من الفوز </p>
+            <button class="colse"> لا </button>
+            <button class="reload"> العب مره أخرى </button>
         </div>
     </div>
     <div class="pupop-is-winer">
         <div class="win">
-            <p class="message-player"> !أحسنت لقد أختمت اللعبة</p>
+            <p> !أحسنت لقد أختمت اللعبة</p>
             <button class="home"><a href="index.html"> الصفحة الرئيسة </a></button>
             <button class="reload"> العب مره أخرى </button>
         </div>
     </div>
-    <div class="lose">
-        <p> حاول مره أخرى! </p>
+
+    <div class="round__Win">
+         <p>أحسنت لقد فزت بالجولة </p>
     </div>
     <section class="body">
+        <div class="delete__letter"> مسح اخر حرف </div>
         <div class="container">
             <div class="head">
-                <div class="current-letter"><span id="current-le"></span> قم بالبحث على حرف</div>
-                <div class="scoorPlayer"> الفوز <span id="scoor"></span> </div>
-                <p class="current-player"> أسم اللأعب: <span id="playerGame"></span></p>
+                <div>
+                    <div class="data-game">
+                        <div class="current-letter">
+                        <span id="current-le">
+                        </span> 
+                        <span id="word"></span>
+                          قم بتجميع كلمة 
+                        </div>
+                        <div class="scoorPlayer"> الفوز <span id="scoor"></span>  من <span id="winScoor"></span></div>
+                    </div>
+                    <div class="queue"></div>
+                    <div class="time"> متبقي من الثواني <span id="time-user"></span> </div>
+                </div>
             </div>
     
             <div class="game-container">
@@ -52,5 +79,8 @@
         </div>
     </section>
 <script src="js/hunt.js"></script>
+<script src="js/settings.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2"></script>
+<script src="js/loader.js"></script>
 </body>
 </html>

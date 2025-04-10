@@ -1,0 +1,23 @@
+{
+    "name": " تحدي المعرفة والمهارة  ",  
+    "short_name": "Website",  
+    "description": "   هي لعبة تعليمية ترفيهية تهدف إلى تطوير المهارات الذهنية والمعلومات العامة بطريقة ممتعة ومشوقة. تتكون اللعبة من ثلاث مراحل متنوعة تجمع بين التحدي والترفيه ", 
+    "start_url": "/",  
+    "background_color": "#eee",  
+    "theme_color": "#000000",  
+    "display": "standalone",  
+"icons": [
+  {
+    "src": "./images/icon-192.png", 
+    "sizes": "192x192",  
+    "type": "image/png"
+  },
+  {
+    "src": "./images/icon-512.png", 
+    "sizes": "512x512",  
+    "type": "image/png"
+  }
+]
+
+  }
+  

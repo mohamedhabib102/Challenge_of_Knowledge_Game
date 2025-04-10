@@ -12,15 +12,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="loader">
+        <!-- <img src="images/icon-512.png" alt="icon-512"> -->
+        <!-- <div class="current__loder"></div> -->
+        <h3> تحدي المعرفة <span>والمهارة</span>  </h3>
+    </div>
     <div class="menu">
         <div class="icon"><i class="fa-solid fa-gear"></i></div>
         <ul>
             <li><a href="hunt.html" class="">  تجميع الحروف  </a></li>
             <li><a href="continueWords.html">  تجميع الكلمات  </a></li>
             <li><a href="questions.html">  أسئلة عن دين الأسلام </a></li>
-            <li><a href="#" id="change-player">  تغير اسم اللأعب </a></li>
+            <li><a href="index.html" id="change-player">  تغير اسم اللأعب </a></li>
             <li><a href="suppourt.html" class="active"> لدعم المصمم </a></li>
         </ul>
+
+
+        <div class="player__game__of__name current-name">
+            <img src="images/default-image.jpg" alt="default-image">
+            <p id="playerGame"></p>
+        </div>
     </div>
     <header class="header-support">
         <h1> كيف تدعمنا؟ </h1>
@@ -68,6 +79,20 @@ buttonToShow.addEventListener("click", () => {
     menu.classList.toggle("show");
 })
 
+
+   // name user
+   const nameUser = localStorage.getItem("gamePlayer");
+
+
+   if (nameUser){
+    document.getElementById("playerGame").textContent = nameUser;
+} else{
+       document.getElementById("playerGame").textContent = " غير معروف ";
+   }
+
+
+
     </script>
+    <script src="js/loader.js"></script>
 </body>
 </html>
