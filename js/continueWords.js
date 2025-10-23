@@ -93,7 +93,9 @@ const winerGame = document.querySelector(".pupop-is-winer");
 const toHome = document.querySelector(".to__home");
 const reloadPage = document.querySelector(".reload__page");
 const voiceWin = document.querySelector(".sound-wind")
+const wordSound = document.getElementById("word-sound")
 voiceWin.pause()
+wordSound.play();
 function showConfetti() {
     confetti({
       particleCount: 250,
@@ -197,6 +199,7 @@ function enableNextTry() {
                             const inputs = document.querySelectorAll("input");
                             defaultSettings(inputs, 0.3, true)
                             winerGame.classList.add("add-winner")
+                            wordSound.pause();
                             voiceWin.play()  
                             showConfetti()
                         }
@@ -254,6 +257,7 @@ checkButton.addEventListener("click", () => {
          focusInputs()
      } else {
          winerGame.classList.add("add-winner")
+         wordSound.pause();
          voiceWin.play()  
          showConfetti()
      }

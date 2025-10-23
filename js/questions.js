@@ -528,11 +528,14 @@ elementMesg.classList.add("message-question");
 
 
 
-let countWin = document.querySelector(".count-win span");
+let countWin = document.querySelector(".count-win p");
 countWin.textContent = currentWiner;
 function checkWin(ele, icon){
     ele.addEventListener("click", () => {
-        let message = document.createTextNode(nowQuestions[currentIndex].message);
+      const span = document.createElement("span")
+      span.textContent = " الأجابة الصحيحة "
+      let message = document.createTextNode(nowQuestions[currentIndex].message);
+        elementMesg.appendChild(span)
         elementMesg.appendChild(message);
         if (ele.textContent.trim() === nowQuestions[currentIndex].isTrue.trim()){
             currentWiner++;
@@ -584,7 +587,7 @@ function handleNextQuestion() {
         Array.from(document.querySelectorAll(".li-questions")).forEach((ele, index) => {
             let nextContent = nowQuestions[currentIndex].questions[index];
             let currIcon = ele.querySelector("i");
-            ele.style.backgroundColor = "#EEE";
+            ele.style.backgroundColor = "#3a4853";
             ele.innerHTML = "";
             ele.classList.remove("ture-bg");
             ele.classList.remove("false-bg");

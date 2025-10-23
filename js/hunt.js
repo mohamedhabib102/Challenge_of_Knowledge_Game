@@ -7,7 +7,7 @@ const nameFromLocal = localStorage.getItem("gamePlayer");
 playerGame.textContent = nameFromLocal;
 
 
-if(nameFromLocal){
+if (nameFromLocal) {
     playerGame.textContent = nameFromLocal
 } else {
     playerGame.textContent = " غير معروف ";
@@ -64,9 +64,9 @@ let letters = Array.from(englishAlphabet);
 function randomLetterGenerator() {
     let currentIndex = 0;
 
-    return function() {
-        if (currentIndex  >= letters.length) {
-            return null; 
+    return function () {
+        if (currentIndex >= letters.length) {
+            return null;
         }
 
 
@@ -110,9 +110,9 @@ reloadBtn.addEventListener("click", () => {
 
 
 
-function getRandomWords(){
+function getRandomWords() {
     const wordsGroups = [
-        ["APPLE", "BANANA" , "CAR", "DOG", "EASY", "FISH", "GIRAFFE", "HOUSE", "ICE", "JUMP"],
+        ["APPLE", "BANANA", "CAR", "DOG", "EASY", "FISH", "GIRAFFE", "HOUSE", "ICE", "JUMP"],
         ["MONKEY", "KITE", "LEAF", "MOUSE", "NICE", "PAST", "QUIET", "ROCK", "SILLY", "TREE"],
         ["ZEBRA", "ANT", "BIRD", "CAT", "DOG", "ELEPHANT", "FROG", "GIRAFFE", "HAT", "JAR"]
     ];
@@ -128,23 +128,25 @@ getRandomWords()
 let wordsArray = getRandomWords();
 
 let wordsUser = [];
-let currentWord = 0; 
-let WordContent =  document.querySelector(".current-letter")
-let  time;
+let currentWord = 0;
+let WordContent = document.querySelector(".current-letter")
+let time;
 let timer;
-const queue =  document.querySelector(".queue")
-const nextWord =  document.querySelector(".delete__letter");
-const roundWin =  document.querySelector(".round__Win");
-const winScoor =  document.getElementById("winScoor");
+const queue = document.querySelector(".queue")
+const nextWord = document.querySelector(".delete__letter");
+const roundWin = document.querySelector(".round__Win");
+const winScoor = document.getElementById("winScoor");
 winScoor.textContent = wordsArray.length;
-const timeUser =  document.getElementById("time-user")
-timeUser.textContent =  time;
+const timeUser = document.getElementById("time-user")
+timeUser.textContent = time;
 const soundWin = document.querySelector(".sound-wind");
-const pupopLose =  document.querySelector(".pupop__lose");
-const pupopLoseClose =  document.querySelector(".pupop__lose .colse");
-const pupopLoseReload =  document.querySelector(".pupop__lose .reload");
+const pupopLose = document.querySelector(".pupop__lose");
+const pupopLoseClose = document.querySelector(".pupop__lose .colse");
+const pupopLoseReload = document.querySelector(".pupop__lose .reload");
+const soundGame =  document.getElementById("sound-game");
 
 soundWin.pause()
+soundGame.play();
 
 
 
@@ -161,10 +163,10 @@ pupopLoseReload.addEventListener("click", () => {
 
 
 // update letters of boxes
-function updateettersAtWinOrLose(){
+function updateettersAtWinOrLose() {
     let letters = generateRandomLetters()
     document.querySelectorAll(".box").forEach((box, index) => {
-        if (index < letters.length){
+        if (index < letters.length) {
             let letterElement = box.querySelector(".letter");
             if (letterElement) {
                 letterElement.textContent = letters[index];
@@ -177,13 +179,13 @@ function updateettersAtWinOrLose(){
 // function win animation 
 function showConfetti() {
     confetti({
-      particleCount: 250,
-      spread: 100,
-      origin: { y: 0.5},
+        particleCount: 250,
+        spread: 100,
+        origin: { y: 0.5 },
     });
-  }
+}
 
-  function startTimer() {
+function startTimer() {
     time = 30;
     timeUser.textContent = time;
 
@@ -217,9 +219,9 @@ startTimer();
 
 word.textContent = wordsArray[currentWord];
 
-if (wordsUser.length > 0){
+if (wordsUser.length > 0) {
     queue.textContent = wordsUser
-} else{
+} else {
     queue.textContent = ""
 }
 
@@ -228,50 +230,86 @@ if (wordsUser.length > 0){
 
 let remainingLetters = [...englishAlphabet];
 function generateRandomLetters() {
-    let remainingLetters = [...englishAlphabet]; 
-    let randomLetters = [];  
+    let remainingLetters = [...englishAlphabet];
+    let randomLetters = [];
 
 
     while (remainingLetters.length > 0) {
         const randomIndex = Math.floor(Math.random() * remainingLetters.length);
         let randomLetter = remainingLetters[randomIndex];
 
-        randomLetters.push(randomLetter);  
-        remainingLetters.splice(randomIndex, 1);  
+        randomLetters.push(randomLetter);
+        remainingLetters.splice(randomIndex, 1);
     }
 
-    return randomLetters;  
+    return randomLetters;
 }
 
-    
 
-    function createLetters() {
-        const randomLetters = generateRandomLetters();  
-    
-        randomLetters.forEach((letter) => {
-            let box = document.createElement("div");
-            box.className = "box";
-    
-            // Create letter element
-            let letterElement = document.createElement("div");
-            letterElement.className = "letter";
-            let textLetter = document.createTextNode(letter);
-            letterElement.appendChild(textLetter);
-            box.appendChild(letterElement);
 
-            gameContainer.appendChild(box);
+// sound letter 
+
+let voices = [];
+// Microsoft Zira
+
+speechSynthesis.onvoiceschanged = () => {
+  voices = speechSynthesis.getVoices();
+  console.log("Voices loaded:", voices);
+};
+
+function speakText(text) {
+  let utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+
+  // لو الأصوات اتحملت فعلاً
+  if (voices.length > 0) {
+    utterance.voice = voices.find(v => v.name.includes("Microsoft David")) || voices[0];
+    speechSynthesis.speak(utterance);
+  } else {
+    // fallback لو لسه الأصوات ما اتحملتش
+    console.warn("Voices not loaded yet!");
+    speechSynthesis.onvoiceschanged = () => {
+      voices = speechSynthesis.getVoices();
+      utterance.voice = voices.find(v => v.name.includes("Microsoft Zira")) || voices[0];
+      speechSynthesis.speak(utterance);
+    };
+  }
+}
+
+
+
+function createLetters() {
+    const randomLetters = generateRandomLetters();
+
+    randomLetters.forEach((letter) => {
+        let box = document.createElement("div");
+        box.className = "box";
+
+        // Create letter element
+        let letterElement = document.createElement("div");
+        letterElement.className = "letter";
+        let textLetter = document.createTextNode(letter);
+        letterElement.appendChild(textLetter);
+        box.appendChild(letterElement);
+
+        gameContainer.appendChild(box);
     });
 
     document.querySelectorAll(".box").forEach((ele) => {
         ele.addEventListener("click", () => {
             // if the button is disabled, no action will performed
             if (ele.disabled) return;
-    
+
+            console.log(ele.textContent);
+
+            // speakText(ele.textContent)
+
+
 
             // add letter to user
             wordsUser.push(ele.textContent.trim());
             console.log(wordsUser);
-            queue.textContent = wordsUser.join(""); 
+            queue.textContent = wordsUser.join("");
 
             if (queue.textContent.trim() === wordsArray[currentWord]) {
                 // stop last timer 
@@ -293,7 +331,7 @@ function generateRandomLetters() {
                 if (currentWord < wordsArray.length) {
                     startTimer();
                 }
-                
+
                 // progers win and state win
                 countScoor++
                 scoorPlayer.textContent = countScoor;
@@ -303,7 +341,7 @@ function generateRandomLetters() {
                 setTimeout(() => {
                     roundWin.classList.remove("show__Round")
                 }, 800)
-                
+
             } else {
                 if (!timer && currentWord < wordsArray.length) {
                     startTimer();
@@ -311,11 +349,11 @@ function generateRandomLetters() {
                 console.log("no");
             }
 
-                // check if the user is win and lose
-                if (countScoor === wordsArray.length){
-                    endGame()
-                    return;
-                }
+            // check if the user is win and lose
+            if (countScoor === wordsArray.length) {
+                endGame()
+                return;
+            }
         });
     });
 
@@ -325,15 +363,15 @@ function generateRandomLetters() {
     nextWord.addEventListener("click", () => {
         try {
             wordsUser.pop()
-            queue.textContent = wordsUser.join(""); 
+            queue.textContent = wordsUser.join("");
         } catch (error) {
             console.log(error);
         }
     })
 
     // next word at state end time
-    function atEndTime(){
-        if (time <= 0){
+    function atEndTime() {
+        if (time <= 0) {
             wordsUser = [];
             currentWord++;
             word.textContent = wordsArray[currentWord];
@@ -345,7 +383,7 @@ function generateRandomLetters() {
 
 
 }
-createLetters();  
+createLetters();
 
 function endGame() {
     clearInterval(timer);
@@ -361,8 +399,10 @@ function endGame() {
         popupWinnerGame.classList.add("add-winner");
         showConfetti();
         soundWin.play();
+        soundGame.pause();
     } else {
-        // خسارة
+        // loseer
         pupopLose.classList.add("add-message");
+        soundGame.pause();
     }
 }
