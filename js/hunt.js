@@ -247,35 +247,6 @@ function generateRandomLetters() {
 
 
 
-// sound letter 
-
-let voices = [];
-// Microsoft Zira
-
-speechSynthesis.onvoiceschanged = () => {
-  voices = speechSynthesis.getVoices();
-  console.log("Voices loaded:", voices);
-};
-
-function speakText(text) {
-  let utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US";
-
-  // لو الأصوات اتحملت فعلاً
-  if (voices.length > 0) {
-    utterance.voice = voices.find(v => v.name.includes("Microsoft David")) || voices[0];
-    speechSynthesis.speak(utterance);
-  } else {
-    // fallback لو لسه الأصوات ما اتحملتش
-    console.warn("Voices not loaded yet!");
-    speechSynthesis.onvoiceschanged = () => {
-      voices = speechSynthesis.getVoices();
-      utterance.voice = voices.find(v => v.name.includes("Microsoft Zira")) || voices[0];
-      speechSynthesis.speak(utterance);
-    };
-  }
-}
-
 
 
 function createLetters() {
