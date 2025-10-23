@@ -653,12 +653,14 @@ audio{
     direction: rtl;
     padding: 0;
     margin: 0;
+      color: white;
     li {
-      margin-bottom: 6px;
-      line-height: 1.6;
+      margin-bottom: 13px;
+      line-height: 1.9;
+      font-size: 18px;
       span {
         display: block;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 700;
       }
     }
@@ -666,9 +668,8 @@ audio{
 }
 
 .content-width {
-  width: 65%;
+  width: 70%;
   margin-left: auto !important;
-  color: white;
   @media (max-width: 992px) {
     & {
       width: 100%;
