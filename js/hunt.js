@@ -178,38 +178,31 @@ function updateettersAtWinOrLose() {
 
 // function win animation 
 function showConfetti() {
-    confetti({
-        particleCount: 250,
-        spread: 100,
-        origin: { y: 0.5 },
-    });
+  confetti({
+    particleCount: 60,
+    spread: 70,
+    origin: { y: 0.6 },
+  });
 }
+
 
 function startTimer() {
-    time = 30;
+  clearInterval(timer);
+  time = 30;
+  timeUser.textContent = time;
+
+  timer = setInterval(() => {
+    time--;
     timeUser.textContent = time;
 
-    timer = setInterval(() => {
-        time--;
-        timeUser.textContent = time;
-
-        if (time <= 0) {
-            clearInterval(timer);
-            timer = null;
-            currentWord++;
-            updateettersAtWinOrLose();
-
-            if (currentWord < wordsArray.length) {
-                wordsUser = [];
-                queue.textContent = "";
-                word.textContent = wordsArray[currentWord];
-                startTimer();
-            } else {
-                endGame();
-            }
-        }
-    }, 1000);
+    if (time <= 0) {
+      clearInterval(timer);
+      timer = null;
+      atEndTime(); 
+    }
+  }, 1000);
 }
+
 
 
 startTimer();
@@ -249,111 +242,96 @@ function generateRandomLetters() {
 
 
 
+
+
 function createLetters() {
-    const randomLetters = generateRandomLetters();
+  // امسح أي حروف قديمة
+  gameContainer.innerHTML = "";
 
-    randomLetters.forEach((letter) => {
-        let box = document.createElement("div");
-        box.className = "box";
+  const randomLetters = generateRandomLetters();
 
-        // Create letter element
-        let letterElement = document.createElement("div");
-        letterElement.className = "letter";
-        let textLetter = document.createTextNode(letter);
-        letterElement.appendChild(textLetter);
-        box.appendChild(letterElement);
+  randomLetters.forEach((letter) => {
+    const box = document.createElement("div");
+    box.className = "box";
 
-        gameContainer.appendChild(box);
-    });
+    const letterElement = document.createElement("div");
+    letterElement.className = "letter";
+    letterElement.textContent = letter;
+    box.appendChild(letterElement);
 
-    document.querySelectorAll(".box").forEach((ele) => {
-        ele.addEventListener("click", () => {
-            // if the button is disabled, no action will performed
-            if (ele.disabled) return;
+    gameContainer.appendChild(box);
+  });
 
-            console.log(ele.textContent);
-
-            // speakText(ele.textContent)
-
-
-
-            // add letter to user
-            wordsUser.push(ele.textContent.trim());
-            console.log(wordsUser);
-            queue.textContent = wordsUser.join("");
-
-            if (queue.textContent.trim() === wordsArray[currentWord]) {
-                // stop last timer 
-                clearInterval(timer);
-                timer = null;
-                time = 0;
-                timeUser.textContent = time;
-
-                // move to next word and plus one scoor
-                currentWord++;
-
-                updateettersAtWinOrLose()
-
-                // Restart data for next word
-                wordsUser = [];
-                word.textContent = wordsArray[currentWord];
-                queue.textContent = ""
-
-                if (currentWord < wordsArray.length) {
-                    startTimer();
-                }
-
-                // progers win and state win
-                countScoor++
-                scoorPlayer.textContent = countScoor;
-
-                // show message win
-                roundWin.classList.add("show__Round")
-                setTimeout(() => {
-                    roundWin.classList.remove("show__Round")
-                }, 800)
-
-            } else {
-                if (!timer && currentWord < wordsArray.length) {
-                    startTimer();
-                }
-                console.log("no");
-            }
-
-            // check if the user is win and lose
-            if (countScoor === wordsArray.length) {
-                endGame()
-                return;
-            }
-        });
-    });
-
-
-
-    // delete last letter
-    nextWord.addEventListener("click", () => {
-        try {
-            wordsUser.pop()
-            queue.textContent = wordsUser.join("");
-        } catch (error) {
-            console.log(error);
-        }
-    })
-
-    // next word at state end time
-    function atEndTime() {
-        if (time <= 0) {
-            wordsUser = [];
-            currentWord++;
-            word.textContent = wordsArray[currentWord];
-            queue.textContent = "";
-        }
-    }
-
-    atEndTime()
-
-
+  // بعد ما نرسم الحروف، نضيف الأحداث مرة واحدة فقط
+  addBoxClickEvents();
 }
+
+
+
+function addBoxClickEvents() {
+  const boxes = document.querySelectorAll(".box");
+  boxes.forEach((ele) => {
+    ele.onclick = () => {
+      if (ele.disabled) return;
+
+      wordsUser.push(ele.textContent.trim());
+      queue.textContent = wordsUser.join("");
+
+      // لو الكلمة صح
+      if (queue.textContent.trim() === wordsArray[currentWord]) {
+        clearInterval(timer);
+        timer = null;
+        time = 0;
+        timeUser.textContent = time;
+
+        countScoor++;
+        scoorPlayer.textContent = countScoor;
+        currentWord++;
+
+        updateettersAtWinOrLose();
+
+        wordsUser = [];
+        queue.textContent = "";
+        word.textContent = wordsArray[currentWord];
+
+        if (currentWord < wordsArray.length) {
+          startTimer();
+        }
+
+        roundWin.classList.add("show__Round");
+        setTimeout(() => {
+          roundWin.classList.remove("show__Round");
+        }, 800);
+      } else {
+        if (!timer && currentWord < wordsArray.length) {
+          startTimer();
+        }
+      }
+
+      // لو اللاعب خلص كل الكلمات
+      if (countScoor === wordsArray.length) {
+        endGame();
+      }
+    };
+  });
+}
+
+
+nextWord.onclick = () => {
+  wordsUser.pop();
+  queue.textContent = wordsUser.join("");
+};
+
+
+function atEndTime() {
+  if (time <= 0) {
+    wordsUser = [];
+    currentWord++;
+    queue.textContent = "";
+    word.textContent = wordsArray[currentWord];
+  }
+}
+
 createLetters();
 
 function endGame() {
@@ -368,7 +346,7 @@ function endGame() {
 
     if (countScoor === wordsArray.length) {
         popupWinnerGame.classList.add("add-winner");
-        showConfetti();
+        // showConfetti();
         soundWin.play();
         soundGame.pause();
     } else {
