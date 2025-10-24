@@ -146,7 +146,7 @@ const pupopLoseReload = document.querySelector(".pupop__lose .reload");
 const soundGame =  document.getElementById("sound-game");
 
 soundWin.pause()
-soundGame.play();
+// soundGame.play();
 
 
 
@@ -348,10 +348,10 @@ function endGame() {
         popupWinnerGame.classList.add("add-winner");
         // showConfetti();
         soundWin.play();
-        soundGame.pause();
+        // soundGame.pause();
     } else {
         // loseer
         pupopLose.classList.add("add-message");
-        soundGame.pause();
+        // soundGame.pause();
     }
 }
