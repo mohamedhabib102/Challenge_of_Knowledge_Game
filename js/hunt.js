@@ -4,14 +4,10 @@ const playerGame = document.getElementById("playerGame");
 // Restore Name From Local Storage
 const nameFromLocal = localStorage.getItem("gamePlayer");
 
-playerGame.textContent = nameFromLocal;
+playerGame.textContent = 
+nameFromLocal || " غير معروف " ;
 
 
-if (nameFromLocal) {
-    playerGame.textContent = nameFromLocal
-} else {
-    playerGame.textContent = " غير معروف ";
-}
 
 
 // Mange Menu
@@ -93,7 +89,7 @@ const reloadBtn = document.querySelector(".pupop-is-winer .reload");
 
 // To Home
 homeBtn.addEventListener("click", () => {
-    window.location.href = "inedx.html";
+    window.location.href = "../index.html";
     popupWinnerGame.classList.remove("add-winner")
 })
 
@@ -123,7 +119,7 @@ function getRandomWords() {
     return randomGroup;
 }
 
-getRandomWords()
+
 
 let wordsArray = getRandomWords();
 
@@ -146,7 +142,7 @@ const pupopLoseReload = document.querySelector(".pupop__lose .reload");
 const soundGame =  document.getElementById("sound-game");
 
 soundWin.pause()
-// soundGame.play();
+soundGame.play().catch(err => console.log(err));
 
 
 
@@ -245,26 +241,24 @@ function generateRandomLetters() {
 
 
 function createLetters() {
-  // امسح أي حروف قديمة
   gameContainer.innerHTML = "";
-
+  const fragment = document.createDocumentFragment();
   const randomLetters = generateRandomLetters();
 
-  randomLetters.forEach((letter) => {
+  randomLetters.forEach(letter => {
     const box = document.createElement("div");
     box.className = "box";
-
-    const letterElement = document.createElement("div");
-    letterElement.className = "letter";
-    letterElement.textContent = letter;
-    box.appendChild(letterElement);
-
-    gameContainer.appendChild(box);
+    const letterEl = document.createElement("div");
+    letterEl.className = "letter";
+    letterEl.textContent = letter;
+    box.appendChild(letterEl);
+    fragment.appendChild(box);
   });
 
-  // بعد ما نرسم الحروف، نضيف الأحداث مرة واحدة فقط
+  gameContainer.appendChild(fragment);
   addBoxClickEvents();
 }
+
 
 
 
@@ -277,7 +271,7 @@ function addBoxClickEvents() {
       wordsUser.push(ele.textContent.trim());
       queue.textContent = wordsUser.join("");
 
-      // لو الكلمة صح
+     
       if (queue.textContent.trim() === wordsArray[currentWord]) {
         clearInterval(timer);
         timer = null;
@@ -292,9 +286,14 @@ function addBoxClickEvents() {
 
         wordsUser = [];
         queue.textContent = "";
-        word.textContent = wordsArray[currentWord];
-
         if (currentWord < wordsArray.length) {
+          word.textContent = wordsArray[currentWord];
+        } else {
+          endGame();
+        }
+
+
+        if (!timer && currentWord < wordsArray.length) {
           startTimer();
         }
 
@@ -308,7 +307,7 @@ function addBoxClickEvents() {
         }
       }
 
-      // لو اللاعب خلص كل الكلمات
+      
       if (countScoor === wordsArray.length) {
         endGame();
       }
@@ -346,12 +345,12 @@ function endGame() {
 
     if (countScoor === wordsArray.length) {
         popupWinnerGame.classList.add("add-winner");
-        // showConfetti();
-        soundWin.play();
-        // soundGame.pause();
+        showConfetti();
+        soundWin.play().catch(err => console.log(err));
+        soundGame.pause();
     } else {
         // loseer
         pupopLose.classList.add("add-message");
-        // soundGame.pause();
+        soundGame.pause();
     }
 }
