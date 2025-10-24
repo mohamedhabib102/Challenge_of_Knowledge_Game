@@ -168,6 +168,7 @@ audio{
   left: -200px;
   z-index: 999999;
   transition: 0.4s;
+  top: 0;
   &.show {
     left: 0;
   }
