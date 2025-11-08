@@ -387,7 +387,7 @@ audio{
 }
 .body {
   /* height: 100vh; */
-  /* background-  image: url(../images/carton.jpg); */
+  background-image: url(../images/carton.jpg);
   background-size: cover;
 .delete__letter{
   position: fixed;
@@ -521,54 +521,51 @@ audio{
         }
       }
     }
-    .box {
-      position: relative;
-      cursor: pointer;
-      text-align: center;
-      transition: 0.3s;
-      width: 150px;
-      height: 150px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: auto;
-      background-color: #eeeeee31;
-      border-radius: 4px;
-      /* backdrop-filter: blur(1.8px); */
-      user-select: none;
-      &.addEvent{
-        cursor: no-drop;
-      }
-      &.show {
-        transform: rotateY(-180deg);
-      }
-      &.losePlayer {
-        opacity: 0.6;
-      }
-      .letter {
-        font-size: 65px;
-        padding: 10px 15px;
-        color: #0c2b43;
-        font-weight: 600;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        @media (max-width: 767px) {
-          &{
-            font-size: 50px;
-          }
-        }
+.box {
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  background-color: rgba(238, 238, 238, 0.25); 
+  border-radius: 8px;
+  backdrop-filter: blur(2px); 
+  -webkit-backdrop-filter: blur(2px); 
+  user-select: none;
+  overflow: hidden; 
+  border: 1px solid rgba(255, 255, 255, 0.2);
 
-        @media (max-width: 435px) {
-          &{
-            font-size: 33px;
-          }
-        }
-      }
-    }
+  &.addEvent {
+    cursor: no-drop;
+  }
+
+  &.show {
+    transform: rotateY(-180deg);
+  }
+
+  &.losePlayer {
+    opacity: 0.6;
+  }
+
+  .letter {
+    font-size: 65px;
+    padding: 10px 15px;
+    color: #0c2b43;
+    font-weight: 600;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
   }
 }
 /* Page Hunt */
