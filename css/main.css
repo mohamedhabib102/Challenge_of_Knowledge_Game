@@ -387,13 +387,13 @@ audio{
 }
 .body {
   /* height: 100vh; */
-  background-image: url(../images/carton.jpg);
+  /* background-  image: url(../images/carton.jpg); */
   background-size: cover;
 .delete__letter{
   position: fixed;
   bottom: 60px;
   right: 15px;
-  z-index: 999999999;
+  z-index: 999999999; 
   background-color: #2196f36b;
   color: white;
   padding: 10px;
@@ -534,7 +534,7 @@ audio{
       margin: auto;
       background-color: #eeeeee31;
       border-radius: 4px;
-      backdrop-filter: blur(1.8px);
+      /* backdrop-filter: blur(1.8px); */
       user-select: none;
       &.addEvent{
         cursor: no-drop;
