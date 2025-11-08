@@ -139,10 +139,10 @@ const soundWin = document.querySelector(".sound-wind");
 const pupopLose = document.querySelector(".pupop__lose");
 const pupopLoseClose = document.querySelector(".pupop__lose .colse");
 const pupopLoseReload = document.querySelector(".pupop__lose .reload");
-const soundGame =  document.getElementById("sound-game");
+// const soundGame =  document.getElementById("sound-game");
 
 soundWin.pause()
-soundGame.play().catch(err => console.log(err));
+// soundGame.play().catch(err => console.log(err));
 
 
 
@@ -347,10 +347,10 @@ function endGame() {
         popupWinnerGame.classList.add("add-winner");
         showConfetti();
         soundWin.play().catch(err => console.log(err));
-        soundGame.pause();
+        // soundGame.pause();
     } else {
         // loseer
         pupopLose.classList.add("add-message");
-        soundGame.pause();
+        // soundGame.pause();
     }
 }
